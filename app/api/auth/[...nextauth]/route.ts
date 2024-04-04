@@ -3,10 +3,13 @@
 // import Providers from "next-auth/providers";
 
 // Use your own logic to authenticate users against your FastAPI backend
+import { jwtDecode } from "jwt-decode";
+import { DecodedJWT, JWT, RefreshedToken } from 'next-auth/jwt';
+
 async function customAuthenticationFunction(credentials: any) {
     try {
         // Call your FastAPI endpoint for user authentication
-        const response = await fetch("http://127.0.0.1:8080/login", {
+        const response = await fetch(`${process.env.BACKEND_BASE_URL}/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -15,8 +18,7 @@ async function customAuthenticationFunction(credentials: any) {
         });
 
         if (response.ok) {
-            const user = await response.json();
-            return user;
+            return await response.json();
         } else {
             // Return null if authentication fails
             return null;
@@ -75,7 +77,7 @@ async function customAuthenticationFunction(credentials: any) {
 // });
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import NextAuth, { AuthOptions } from "next-auth";
+import NextAuth, { AuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: AuthOptions = {
@@ -84,39 +86,62 @@ export const authOptions: AuthOptions = {
             // The name to display on the sign-in form (e.g., 'Sign in with...')
             name: "Credentials",
             credentials: {
-                email: { label: "Email", type: "email" },
-                password: { label: "Password", type: "password" },
+                email: {label: "Email", type: "email"},
+                password: {label: "Password", type: "password"},
             },
             async authorize(credentials, req) {
                 // Fetch user from your API
-                const user = await customAuthenticationFunction(credentials);
+                const result = await customAuthenticationFunction(credentials);
 
-                if (user) {
+                if (result) {
+                    const {
+                        id,
+                        email,
+                        exp,
+                    }: DecodedJWT = jwtDecode(result.data.access);
+
+                    const user = {
+                        ...result.data,
+                        exp,
+                        user: {
+                            id,
+                            email,
+                        },
+                    } as User;
+
+                    console.log(user);
+
                     // Any user object returned here will be set in the session for the user
                     return Promise.resolve(user);
                 } else {
                     // If the credentials are invalid, return null
                     return Promise.resolve(null);
-                    // throw new Error(
-                    //     JSON.stringify({ errors: [], status: false })
-                    // );
                 }
             },
         }),
     ],
     callbacks: {
-        async jwt({ token, user }) {
+        async jwt({token, user}) {
+            console.log("user", user);
             if (user) {
                 token.id = user.id;
+                token.refresh = user.refresh;
+                token.access = user.access;
+                token.exp = user.exp;
+                token.user = user.user;
             }
             return token;
         },
-        async session({ session, token }) {
-            console.log(token);
+        async session({session, token}) {
+            console.log("token", token)
+            session.access = token.access;
+            session.exp = token.exp;
+            session.refresh = token.refresh;
+            session.user = token.user;
             // session.user.id = token.id;
             return session;
         },
-        async redirect({ url, baseUrl }) {
+        async redirect({url, baseUrl}) {
             return baseUrl;
         },
     },
@@ -124,9 +149,11 @@ export const authOptions: AuthOptions = {
         error: "/login",
         signIn: "/login",
     },
+    secret: process.env.NEXTAUTH_SECRET,
     debug: true,
     session: {
         strategy: "jwt",
+        maxAge: 7 * 24 * 60 * 60, // 7 Days
     },
 };
 
