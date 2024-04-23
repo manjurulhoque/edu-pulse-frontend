@@ -2,12 +2,10 @@
 
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
-const Login = () => {
-    // const router = useRouter();
-
+const Signup = () => {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -40,14 +38,14 @@ const Login = () => {
                             <div className="row justify-center items-center">
                                 <div className="col-xl-6 col-lg-8">
                                     <div className="px-50 py-50 md:px-25 md:py-25 bg-white shadow-1 rounded-16">
-                                        <h3 className="text-30 lh-13">Login</h3>
+                                        <h3 className="text-30 lh-13">Sign Up</h3>
                                         <p className="mt-10">
-                                            {"Don't"} have an account yet?{" "}
+                                            Already have an account?
                                             <Link
-                                                href="/signup"
+                                                href="/login"
                                                 className="text-purple-1"
                                             >
-                                                Sign up for free
+                                                Login
                                             </Link>
                                         </p>
 
@@ -56,6 +54,21 @@ const Login = () => {
                                             className="contact-form respondForm__form row y-gap-20 pt-30"
                                             onSubmit={handleSubmit}
                                         >
+                                            <div className="col-12">
+                                                <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
+                                                    Name
+                                                </label>
+                                                <input
+                                                    required
+                                                    type="text"
+                                                    name="name"
+                                                    value={name}
+                                                    onChange={(e) =>
+                                                        setName(e.target.value)
+                                                    }
+                                                    placeholder="john doe"
+                                                />
+                                            </div>
                                             <div className="col-12">
                                                 <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
                                                     Email
@@ -95,29 +108,10 @@ const Login = () => {
                                                     id="submit"
                                                     className="button -md -yellow-1 text-dark-1 fw-500 w-1/1"
                                                 >
-                                                    Login
+                                                    Register
                                                 </button>
                                             </div>
                                         </form>
-
-                                        <div className="lh-12 text-dark-1 fw-500 text-center mt-20">
-                                            Or sign in using
-                                        </div>
-
-                                        <div className="d-flex x-gap-20 items-center justify-between pt-20">
-                                            <div>
-                                                <button
-                                                    className="button -sm px-24 py-20 -outline-blue-3 text-blue-3 text-14">
-                                                    Log In via Facebook
-                                                </button>
-                                            </div>
-                                            <div>
-                                                <button
-                                                    className="button -sm px-24 py-20 -outline-red-3 text-red-3 text-14">
-                                                    Log In via Github
-                                                </button>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -129,4 +123,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Signup;
