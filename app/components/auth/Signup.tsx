@@ -1,6 +1,5 @@
 "use client";
 
-import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -12,20 +11,30 @@ const Signup = () => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        const result = await signIn("credentials", {
-            email: email,
-            password: password,
-            redirect: false,
-        });
 
-        console.log(result);
+        try {
+            const response = await fetch('/api/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({name, email, password}),
+            });
 
-        if (result?.status === 401) {
-            // If there is an error, update the state to display the error message
-            setErrorMessage("Invalid credentials");
-        } else {
-            // Redirect on successful login
-            window.location.href = "http://localhost:3000";
+            if (!response.ok) {
+                const data = await response.json();
+                setErrorMessage(data.message || 'Something went wrong');
+            } else {
+                const data = await response.json();
+                console.log(data);
+                setErrorMessage('');
+                if (process.env.BASE_URL) {
+                    window.location.href = process.env.BASE_URL;
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            setErrorMessage('An unexpected error occurred');
         }
     };
 

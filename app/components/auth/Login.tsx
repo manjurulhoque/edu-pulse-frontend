@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { permanentRedirect } from "next/navigation";
 
 const Login = () => {
     // const router = useRouter();
@@ -26,8 +27,7 @@ const Login = () => {
             // If there is an error, update the state to display the error message
             setErrorMessage("Invalid credentials");
         } else {
-            // Redirect on successful login
-            window.location.href = "http://localhost:3000";
+            window.location.reload();
         }
     };
 
