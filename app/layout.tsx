@@ -8,6 +8,8 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import { AOSInit } from "./components/aos-init";
 import React from "react";
+import { NextAuthProvider } from "@/app/components/NextAuthProvider";
+
 config.autoAddCss = false;
 
 export const metadata: Metadata = {
@@ -15,19 +17,23 @@ export const metadata: Metadata = {
     description: "Learn from the experienced teachers",
 };
 
-export default function RootLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+interface Props {
+    children: React.ReactNode
+}
+
+const RootLayout: React.FC<Props> = ({children}) => {
     return (
         <html lang="en">
-            <AOSInit />
-            <body>
-                <Header />
-                {children}
-                <Footer />
-            </body>
+        <AOSInit/>
+        <body>
+        <NextAuthProvider>
+            <Header/>
+            {children}
+            <Footer/>
+        </NextAuthProvider>
+        </body>
         </html>
     );
 }
+
+export default RootLayout;

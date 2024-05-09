@@ -6,8 +6,13 @@ import React, { useState } from "react";
 import { HeaderExplore } from "./HeaderExplore";
 import Menu from "./Menu";
 import MobileMenu from "./MobileMenu";
+import { useSession } from "next-auth/react";
 
 const Header = () => {
+    const {data: session, status} = useSession();
+    console.log("session", session?.user);
+    console.log("status", status);
+
     const [activeMobileMenu, setActiveMobileMenu] = useState(false);
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -60,11 +65,6 @@ const Header = () => {
                                         activeMobileMenu={activeMobileMenu}
                                     />
 
-                                    {/*<CartToggle*/}
-                                    {/*    parentClassess={"relative ml-30 xl:ml-20"}*/}
-                                    {/*    allClasses={"d-flex items-center text-dark-1"}*/}
-                                    {/*/>*/}
-
                                     <div className="d-none xl:d-block ml-20">
                                         <button
                                             onClick={() => setActiveMobileMenu(true)}
@@ -76,20 +76,22 @@ const Header = () => {
                                     </div>
                                 </div>
 
-                                <div className="header-right__buttons d-flex items-center ml-30 xl:ml-20 md:d-none">
-                                    <Link
-                                        href="/login"
-                                        className="button px-30 h-50 -outline-dark-1 text-dark-1"
-                                    >
-                                        Log in
-                                    </Link>
-                                    <Link
-                                        href="/signup"
-                                        className="button px-30 h-50 -dark-1 text-white ml-10"
-                                    >
-                                        Sign up
-                                    </Link>
-                                </div>
+                                {!session?.user && (
+                                    <div className="header-right__buttons d-flex items-center ml-30 xl:ml-20 md:d-none">
+                                        <Link
+                                            href="/login"
+                                            className="button px-30 h-50 -outline-dark-1 text-dark-1"
+                                        >
+                                            Log in
+                                        </Link>
+                                        <Link
+                                            href="/signup"
+                                            className="button px-30 h-50 -dark-1 text-white ml-10"
+                                        >
+                                            Sign up
+                                        </Link>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
