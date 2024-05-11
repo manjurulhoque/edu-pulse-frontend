@@ -11,4 +11,10 @@ export const sidebarItems = [
         iconClass: "text-20 icon-play-button",
         text: "My Courses",
     },
+    {
+        id: 3,
+        href: "/create-course",
+        iconClass: "text-20 icon-list",
+        text: "Create Course",
+    },
 ];

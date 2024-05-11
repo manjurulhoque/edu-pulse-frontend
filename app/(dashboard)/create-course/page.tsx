@@ -1,14 +1,15 @@
 import { Metadata } from "next";
-import Sidebar from "@/app/components/dashboard/Sidebar";
-import DashboardHome from "@/app/components/dashboard/DashboardHome";
 import HeaderDashboard from "@/app/components/dashboard/HeaderDashboard";
-import FooterDashboard from "@/app/components/dashboard/FooterDashboard";
+import Sidebar from "@/app/components/dashboard/Sidebar";
+import React from "react";
+import CreateCourse from "@/app/components/dashboard/courses/CreateCourse";
 
 export const metadata: Metadata = {
-    title: "My Dashboard",
+    title: "Create course",
+    description: "Create course page",
 };
 
-const DashboardPage = () => {
+const CreateCoursesPage: React.FC = async () => {
     return (
         <div className="barba-container" data-barba="container">
             <main className="main-content">
@@ -22,14 +23,12 @@ const DashboardPage = () => {
                         <div className="dashboard__sidebar scroll-bar-1">
                             <Sidebar/>
                         </div>
-                        <DashboardHome/>
+                        <CreateCourse/>
                     </div>
                 </div>
             </main>
-
-            <FooterDashboard/>
         </div>
     )
 }
 
-export default DashboardPage;
+export default CreateCoursesPage;
