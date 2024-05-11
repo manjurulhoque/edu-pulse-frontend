@@ -8,9 +8,9 @@ import { usePathname } from "next/navigation";
 import { menuList } from "@/app/data/menu";
 
 export default function MobileMenu({
-    setActiveMobileMenu,
-    activeMobileMenu,
-}: any) {
+                                       setActiveMobileMenu,
+                                       activeMobileMenu,
+                                   }: any) {
     const [showMenu, setShowMenu] = useState(false);
     const [menuNesting, setMenuNesting] = useState([]);
     const [menuItem, setMenuItem] = useState("");
@@ -18,11 +18,11 @@ export default function MobileMenu({
 
     useEffect(() => {
         menuList.forEach((elm) => {
-            elm?.links?.forEach((elm2) => {
+            elm?.links?.forEach((elm2: any) => {
                 if (elm2.href?.split("/")[1] == pathname?.split("/")[1]) {
                     setMenuItem(elm.title);
                 } else {
-                    elm2?.links?.map((elm3) => {
+                    elm2?.links?.map((elm3: any) => {
                         if (
                             elm3.href?.split("/")[1] == pathname?.split("/")[1]
                         ) {
@@ -103,7 +103,7 @@ export default function MobileMenu({
                                         </div>
 
                                         {elm.links &&
-                                            elm.links.map((itm, index) => (
+                                            elm.links.map((itm: any, index) => (
                                                 <div
                                                     key={index}
                                                     className={
@@ -142,14 +142,14 @@ export default function MobileMenu({
                                                                             pre
                                                                         ): any => {
                                                                             return pre[1] ==
-                                                                                itm.title
+                                                                            itm.title
                                                                                 ? [
-                                                                                      pre[0],
-                                                                                  ]
+                                                                                    pre[0],
+                                                                                ]
                                                                                 : [
-                                                                                      pre[0],
-                                                                                      itm.title,
-                                                                                  ];
+                                                                                    pre[0],
+                                                                                    itm.title,
+                                                                                ];
                                                                         }
                                                                     )
                                                                 }
@@ -185,8 +185,8 @@ export default function MobileMenu({
                                                                 {itm.links &&
                                                                     itm.links.map(
                                                                         (
-                                                                            itm2,
-                                                                            index3
+                                                                            itm2: any,
+                                                                            index3: any
                                                                         ) => (
                                                                             <Link
                                                                                 key={
@@ -225,7 +225,7 @@ export default function MobileMenu({
                 )}
 
                 {/* mobile footer start */}
-                <MobileFooter />
+                <MobileFooter/>
                 {/* mobile footer end */}
             </div>
 

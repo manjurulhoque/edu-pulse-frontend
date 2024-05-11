@@ -7,11 +7,13 @@ import { HeaderExplore } from "./HeaderExplore";
 import Menu from "./Menu";
 import MobileMenu from "./MobileMenu";
 import { signOut, useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
     const {data: session, status} = useSession();
     console.log("session", session?.user);
     console.log("status", status);
+    const pathname = usePathname();
 
     const [activeMobileMenu, setActiveMobileMenu] = useState(false);
     const handleSubmit = (e: any) => {
@@ -93,7 +95,15 @@ const Header = () => {
                                     </div>
                                 )}
                                 {session?.user && (
-                                    <div className="header-right__buttons d-flex items-center ml-30 xl:ml-20 md:d-none">
+                                    <div className="header-right__buttons d-flex items-center xl:ml-20 md:d-none">
+                                        <Link
+                                            href="/dashboard"
+                                            className={`text-dark-1 mr-20 ${
+                                                pathname == "/dashboard" ? "activeMenu" : "inActiveMenu"
+                                            } `}
+                                        >
+                                            Dashboard
+                                        </Link>
                                         <button
                                             onClick={() => signOut()}
                                             className="button px-30 h-50 -outline-dark-1 text-dark-1"
