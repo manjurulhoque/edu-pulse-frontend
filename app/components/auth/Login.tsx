@@ -3,18 +3,32 @@
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { permanentRedirect } from "next/navigation";
+import { toast } from "react-toastify";
 
 const Login = () => {
-    // const router = useRouter();
+    const [isMounted, setIsMounted] = useState(false);
 
+    // const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [isClicked, setIsClicked] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    if (!isMounted) {
+        return null;
+    }
+
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+        setErrorMessage("");
+        setIsClicked(true);
         const result = await signIn("credentials", {
             email: email,
             password: password,
@@ -26,15 +40,24 @@ const Login = () => {
         if (result?.status === 401) {
             // If there is an error, update the state to display the error message
             setErrorMessage("Invalid credentials");
+            setIsClicked(false);
         } else {
-            window.location.reload();
+            toast.success("Logged in successfully");
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
         }
     };
 
     return (
         <div className="main-content">
             <div className="content-wrapper js-content-wrapper overflow-hidden">
-                <section className="form-page js-mouse-move-container">
+                <section className="form-page js-mouse-move-container" style={
+                    {
+                        backgroundImage: `url("https://images.unsplash.com/photo-1462536943532-57a629f6cc60")`,
+                        backgroundPosition: "center"
+                    }
+                }>
                     <div className="form-page__content lg:py-50">
                         <div className="container">
                             <div className="row justify-center items-center">
@@ -90,6 +113,7 @@ const Login = () => {
                                             </div>
                                             <div className="col-12">
                                                 <button
+                                                    disabled={isClicked}
                                                     type="submit"
                                                     name="submit"
                                                     id="submit"

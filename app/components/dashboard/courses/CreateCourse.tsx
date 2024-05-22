@@ -1,9 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import FooterDashboard from "@/app/components/dashboard/FooterDashboard";
+import ReactQuill from "react-quill";
+import 'react-quill/dist/quill.snow.css';
+import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 
 const CreateCourse: React.FC = () => {
+    const [value, setValue] = useState('');
+    const [studentWillLearn, setStudentWillLearn] = useState('');
+    const {data, error, isLoading, isError, refetch} = useCategoriesQuery(null);
+    console.log(data)
+    const learningModules = {
+        toolbar: [
+            [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+            ['link'],
+        ],
+    }
     const handleSubmit = (e: any) => {
         e.preventDefault();
     };
@@ -11,11 +24,11 @@ const CreateCourse: React.FC = () => {
     return (
         <div className="dashboard__main">
             <div className="dashboard__content bg-light-4">
-                <div className="row pb-50 mb-10">
+                <div className="row pb-10 mb-4">
                     <div className="col-auto">
                         <h1 className="text-30 lh-12 fw-700">Create New Course</h1>
                         <div className="mt-10">
-                            Lorem ipsum dolor sit amet, consectetur.
+                            Create your outstanding course!
                         </div>
                     </div>
                 </div>
@@ -52,7 +65,7 @@ const CreateCourse: React.FC = () => {
 
                                         <textarea
                                             required
-                                            placeholder="Description"
+                                            placeholder="Short Description"
                                             rows={7}
                                         ></textarea>
                                     </div>
@@ -62,11 +75,7 @@ const CreateCourse: React.FC = () => {
                                             Course Description*
                                         </label>
 
-                                        <textarea
-                                            required
-                                            placeholder="Description"
-                                            rows={7}
-                                        ></textarea>
+                                        <ReactQuill theme="snow" value={value} onChange={setValue}/>
                                     </div>
 
                                     <div className="col-md-6">
@@ -74,11 +83,11 @@ const CreateCourse: React.FC = () => {
                                             What will students learn in your course?*
                                         </label>
 
-                                        <textarea
-                                            required
-                                            placeholder="Description"
-                                            rows={7}
-                                        ></textarea>
+                                        <ReactQuill
+                                            theme="snow" value={studentWillLearn}
+                                            onChange={setStudentWillLearn}
+                                            modules={learningModules}
+                                        />
                                     </div>
 
                                     <div className="col-md-6">
@@ -86,32 +95,16 @@ const CreateCourse: React.FC = () => {
                                             Requirements*
                                         </label>
 
-                                        <textarea
-                                            required
-                                            placeholder="Description"
-                                            rows={7}
-                                        ></textarea>
+                                        <ReactQuill
+                                            theme="snow" value={studentWillLearn}
+                                            onChange={setStudentWillLearn}
+                                            modules={learningModules}
+                                        />
                                     </div>
 
                                     <div className="col-md-6">
                                         <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
                                             Course Level*
-                                        </label>
-
-                                        <input required type="text" placeholder="Select"/>
-                                    </div>
-
-                                    <div className="col-md-6">
-                                        <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
-                                            Audio Language*
-                                        </label>
-
-                                        <input required type="text" placeholder="Select"/>
-                                    </div>
-
-                                    <div className="col-md-6">
-                                        <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
-                                            Close Caption*
                                         </label>
 
                                         <input required type="text" placeholder="Select"/>

@@ -30,9 +30,9 @@ const Header = () => {
                                 <div className="header__logo ">
                                     <Link href="/">
                                         <Image
-                                            width={140}
-                                            height={50}
-                                            src="/assets/img/general/logo-dark.svg"
+                                            width={40}
+                                            height={40}
+                                            src="/assets/img/general/logo.png"
                                             alt="logo"
                                         />
                                     </Link>

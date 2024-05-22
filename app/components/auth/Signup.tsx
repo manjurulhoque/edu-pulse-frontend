@@ -1,17 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const Signup = () => {
+    const [isMounted, setIsMounted] = useState(false);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [isClicked, setIsClicked] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    if (!isMounted) {
+        return null;
+    }
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-
+        setErrorMessage("");
+        setIsClicked(true);
         try {
             const response = await fetch('/api/signup', {
                 method: 'POST',
@@ -24,24 +36,32 @@ const Signup = () => {
             if (!response.ok) {
                 const data = await response.json();
                 setErrorMessage(data.message || 'Something went wrong');
+                setIsClicked(false);
             } else {
                 const data = await response.json();
                 console.log(data);
                 setErrorMessage('');
-                if (process.env.BASE_URL) {
-                    window.location.href = process.env.BASE_URL;
-                }
+                toast.success("Register was successful");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
             }
         } catch (error) {
             console.error(error);
-            setErrorMessage('An unexpected error occurred');
+            setIsClicked(false);
+            toast.error('An unexpected error occurred');
         }
     };
 
     return (
         <div className="main-content">
             <div className="content-wrapper js-content-wrapper overflow-hidden">
-                <section className="form-page js-mouse-move-container">
+                <section className="form-page js-mouse-move-container" style={
+                    {
+                        backgroundImage: `url("https://images.unsplash.com/photo-1462536943532-57a629f6cc60")`,
+                        backgroundPosition: "center"
+                    }
+                }>
                     <div className="form-page__content lg:py-50">
                         <div className="container">
                             <div className="row justify-center items-center">
@@ -112,6 +132,7 @@ const Signup = () => {
                                             </div>
                                             <div className="col-12">
                                                 <button
+                                                    disabled={isClicked}
                                                     type="submit"
                                                     name="submit"
                                                     id="submit"

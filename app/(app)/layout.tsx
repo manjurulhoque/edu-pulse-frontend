@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "../globals.css";
 import "../../public/assets/sass/styles.scss";
+import 'react-toastify/dist/ReactToastify.css';
 
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
@@ -11,6 +12,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Footer from "@/app/components/layout/Footer";
 import Header from "@/app/components/layout/Header";
 import { AOSInit } from "@/app/components/aos-init";
+import { ToastContainer } from "react-toastify";
 
 config.autoAddCss = false;
 
@@ -34,6 +36,7 @@ const RootLayout: React.FC<Props> = async ({children}) => {
             <Header/>
             {children}
             <Footer/>
+            <ToastContainer/>
         </NextAuthProvider>
         </body>
         </html>

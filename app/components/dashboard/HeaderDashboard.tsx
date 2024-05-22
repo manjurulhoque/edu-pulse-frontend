@@ -105,17 +105,17 @@ const HeaderDashboard: React.FC = () => {
                                 <div className="header__logo ml-30 md:ml-20">
                                     <Link data-barba href="/">
                                         <Image
-                                            width={140}
-                                            height={50}
+                                            width={40}
+                                            height={40}
                                             className="-light-d-none"
-                                            src="/assets/img/general/logo-dark.svg"
+                                            src="/assets/img/general/logo.png"
                                             alt="logo"
                                         />
                                         <Image
-                                            width={140}
-                                            height={50}
+                                            width={40}
+                                            height={40}
                                             className="-dark-d-none"
-                                            src="/assets/img/general/logo-dark.svg"
+                                            src="/assets/img/general/logo.png"
                                             alt="logo"
                                         />
                                     </Link>

@@ -17,9 +17,9 @@ export default function Footer() {
                     <div className="col-xl-4 col-lg-5 col-md-6">
                         <div className="footer-header__logo">
                             <Image
-                                width={140}
-                                height={50}
-                                src="/assets/img/general/logo-dark.svg"
+                                width={40}
+                                height={40}
+                                src="/assets/img/general/logo.png"
                                 alt="logo"
                             />
                         </div>
