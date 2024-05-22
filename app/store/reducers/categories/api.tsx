@@ -14,7 +14,11 @@ export const CategoryApi = createApi({
                     url: `categories/`,
                 }
             },
-            providesTags: ['Category']
+            providesTags: ['Category'],
+            transformResponse: (rawResult: { data: Category[], message: string }, meta) => {
+                const { data } = rawResult;
+                return data;
+            },
         })
     })
 });
