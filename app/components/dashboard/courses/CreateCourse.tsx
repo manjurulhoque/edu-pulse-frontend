@@ -21,9 +21,13 @@ interface FormValues {
 
 
 const formSchema = z.object({
-    title: z.string().min(1, 'Title is required'),
+    title: z.string().min(3, 'Title is required'),
+    description: z.string().min(10, 'At least 10 characters is required'),
     level: z.string().min(1, 'Level is required'),
     category: z.string().min(1, 'Category is required'),
+    short_description: z.string().optional(),
+    student_will_learn: z.string().optional(),
+    requirements: z.string().optional(),
 });
 
 
@@ -48,7 +52,15 @@ const CreateCourse: React.FC = () => {
             level: '',
             category: '',
         },
-        validationSchema: toFormikValidationSchema(formSchema),
+        // validationSchema: toFormikValidationSchema(formSchema),
+        validate: values => {
+            try {
+                formSchema.parse(values);
+                return {};
+            } catch (error) {
+                return (error as z.ZodError).formErrors.fieldErrors;
+            }
+        },
         onSubmit: (values) => {
             // Handle form submission
             console.log(values);
@@ -100,7 +112,6 @@ const CreateCourse: React.FC = () => {
                                         </label>
 
                                         <textarea
-                                            required
                                             placeholder="Short Description"
                                             rows={7}
                                             name="short_description"
@@ -195,7 +206,10 @@ const CreateCourse: React.FC = () => {
 
                                     <div className="row y-gap-20 justify-between pt-15">
                                         <div className="col-auto">
-                                            <button className="button -md -purple-1 text-white -right" type="submit">
+                                            <button
+                                                className="button -md -purple-1 text-white -right"
+                                                type="submit"
+                                            >
                                                 Create
                                             </button>
                                         </div>
