@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { CategoryApi } from "@/app/store/reducers/categories/api";
+import { CourseApi } from "@/app/store/reducers/courses/api";
 
 export const store: any = configureStore({
     reducer: {
         [CategoryApi.reducerPath]: CategoryApi.reducer,
+        [CourseApi.reducerPath]: CourseApi.reducer,
     },
     devTools: true,
     middleware: (getDefaultMiddleware: any) =>

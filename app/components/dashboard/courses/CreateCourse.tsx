@@ -8,6 +8,8 @@ import dynamic from "next/dynamic";
 import { FormikErrors, useFormik } from "formik";
 import { z } from 'zod';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
+import { useCreateCourseMutation } from "@/app/store/reducers/courses/api";
+import { toast } from "react-toastify";
 
 interface FormValues {
     title: string;
@@ -16,7 +18,7 @@ interface FormValues {
     student_will_learn: string;
     requirements: string;
     level: string;
-    category: string;
+    category_id: number | null;
 }
 
 
@@ -24,8 +26,8 @@ const formSchema = z.object({
     title: z.string().min(3, 'Title is required'),
     description: z.string().min(10, 'At least 10 characters is required'),
     level: z.string().min(1, 'Level is required'),
-    category: z.string().min(1, 'Category is required'),
-    short_description: z.string().optional(),
+    category_id: z.number().int("Category is required"),
+    short_description: z.string().min(10, 'At least 10 characters is required'),
     student_will_learn: z.string().optional(),
     requirements: z.string().optional(),
 });
@@ -34,6 +36,7 @@ const formSchema = z.object({
 const CreateCourse: React.FC = () => {
     const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), {ssr: false}), []);
     const {data, error, isLoading: isCategoriesLoading, isError, refetch} = useCategoriesQuery(null);
+    const [createNewCourse, {isLoading, isError: isCreateCourseError, isSuccess}] = useCreateCourseMutation();
 
     const learningModules = {
         toolbar: [
@@ -50,7 +53,7 @@ const CreateCourse: React.FC = () => {
             student_will_learn: '',
             requirements: '',
             level: '',
-            category: '',
+            category_id: null,
         },
         // validationSchema: toFormikValidationSchema(formSchema),
         validate: values => {
@@ -61,14 +64,16 @@ const CreateCourse: React.FC = () => {
                 return (error as z.ZodError).formErrors.fieldErrors;
             }
         },
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             // Handle form submission
-            console.log(values);
+            const result: any = await createNewCourse(values);
+            if (result.data) {
+                toast.success("Course created successfully")
+            } else {
+                toast.warning(result?.data?.message || "Something went wrong. Please try again later");
+            }
         },
     });
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-    };
 
     return (
         <div className="dashboard__main">
@@ -118,8 +123,10 @@ const CreateCourse: React.FC = () => {
                                             value={formik.values.short_description}
                                             onChange={formik.handleChange}
                                         ></textarea>
-                                        {formik.errors.short_description &&
-                                            <div>{formik.errors.short_description}</div>}
+                                        {
+                                            formik.errors.short_description &&
+                                            <div>{formik.errors.short_description}</div>
+                                        }
                                     </div>
 
                                     <div className="col-12">
@@ -189,9 +196,9 @@ const CreateCourse: React.FC = () => {
 
                                         <select
                                             className="form-control"
-                                            name="category"
-                                            value={formik.values.category}
-                                            onChange={formik.handleChange}
+                                            name="category_id"
+                                            value={formik.values.category_id ?? ''}
+                                            onChange={(event) => formik.setFieldValue('category_id', parseInt(event.target.value))}
                                         >
                                             <option value="">Select category</option>
                                             {!isCategoriesLoading &&
@@ -201,7 +208,7 @@ const CreateCourse: React.FC = () => {
                                                     </option>
                                                 ))}
                                         </select>
-                                        {formik.errors.category && <div>{formik.errors.category}</div>}
+                                        {formik.errors.category_id && <div>{formik.errors.category_id}</div>}
                                     </div>
 
                                     <div className="row y-gap-20 justify-between pt-15">
