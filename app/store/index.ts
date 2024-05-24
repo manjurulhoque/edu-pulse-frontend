@@ -9,7 +9,7 @@ export const store: any = configureStore({
     },
     devTools: true,
     middleware: (getDefaultMiddleware: any) =>
-    getDefaultMiddleware({}).concat(CategoryApi.middleware),
+    getDefaultMiddleware({}).concat(CategoryApi.middleware, CourseApi.middleware),
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

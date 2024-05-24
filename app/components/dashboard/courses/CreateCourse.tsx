@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import FooterDashboard from "@/app/components/dashboard/FooterDashboard";
 import 'react-quill/dist/quill.snow.css';
 import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 import dynamic from "next/dynamic";
-import { FormikErrors, useFormik } from "formik";
+import { useFormik } from "formik";
 import { z } from 'zod';
-import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { useCreateCourseMutation } from "@/app/store/reducers/courses/api";
 import { toast } from "react-toastify";
 

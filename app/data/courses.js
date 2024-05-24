@@ -20,6 +20,7 @@ export const coursesData = [
         viewStatus: "Medium",
         difficulty: "Hard",
         desc: "Introductory course on web hosting, domain registration, and how you can easily publish and edit your website online.",
+        status: "Finished",
     },
 ];
 

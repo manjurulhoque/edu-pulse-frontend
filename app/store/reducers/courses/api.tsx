@@ -8,6 +8,18 @@ export const CourseApi = createApi({
     baseQuery: DynamicBaseQuery,
     tagTypes: ['Course'],
     endpoints: (builder) => ({
+        myCreatedCourses: builder.query<Course[], null>({
+            query: () => {
+                return {
+                    url: 'my-created-courses/',
+                }
+            },
+            providesTags: ['Course'],
+            transformResponse: (rawResult: { data: Course[], message: string }, meta) => {
+                const { data } = rawResult;
+                return data;
+            },
+        }),
         createCourse: builder.mutation({
             query: body => {
                 return {
@@ -22,5 +34,6 @@ export const CourseApi = createApi({
 });
 
 export const {
-    useCreateCourseMutation
+    useCreateCourseMutation,
+    useMyCreatedCoursesQuery
 } = CourseApi;

@@ -7,7 +7,7 @@ export const sidebarItems = [
     },
     {
         id: 2,
-        href: "/my-courses",
+        href: "/my-created-courses",
         iconClass: "text-20 icon-play-button",
         text: "My Courses",
     },
