@@ -7,14 +7,16 @@ import { difficulty } from "../../data/courses";
 import Link from "next/link";
 import HomeCourseCard from "./HomeCourseCard";
 import { useAllCoursesQuery } from "@/app/store/reducers/courses/api";
+import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 
 export default function HomeCourses() {
     const [pageItems, setPageItems] = useState<Course[]>([]);
-    const [currentCategory, setCurrentCategory] = useState("All");
+    const [currentCategory, setCurrentCategory] = useState<string | number>("All");
     const [rating, setRating] = useState("All");
     const [currentDifficulty, setCurrentDifficulty] = useState("All");
     const [currentDropdown, setCurrentDropdown] = useState("");
     const {data: courseResult} = useAllCoursesQuery({page: 1, page_size: 10});
+    const {data: categories} = useCategoriesQuery(null);
 
     useEffect(() => {
         if (courseResult) {
@@ -94,18 +96,18 @@ export default function HomeCourses() {
                                             } `}
                                         >
                                             <div className="text-14 y-gap-15 js-dropdown-list">
-                                                {allCategories.map((elm, i) => (
+                                                {categories?.map((elm, i) => (
                                                     <div
                                                         key={i}
                                                         onClick={() => {
-                                                            setCurrentCategory(elm);
+                                                            setCurrentCategory(elm.id);
                                                             setCurrentDropdown("");
                                                         }}
                                                         className={`d-block js-dropdown-link cursor ${
-                                                            currentCategory == elm ? "activeMenu" : ""
+                                                            currentCategory == elm.id ? "activeMenu" : ""
                                                         } `}
                                                     >
-                                                        {elm}
+                                                        {elm.name}
                                                     </div>
                                                 ))}
                                             </div>

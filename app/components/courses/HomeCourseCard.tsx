@@ -8,9 +8,9 @@ import Link from "next/link";
 export default function HomeCourseCard({course, index}: { course: Course, index: number }) {
     const [rating, setRating] = useState<string[]>([]);
     useEffect(() => {
-        // for (let i = Math.round(course.rating); i >= 1; i--) {
-        //     setRating((pre) => [...pre, "star"]);
-        // }
+        for (let i = Math.round(4.6); i >= 1; i--) {
+            setRating((pre) => [...pre, "star"]);
+        }
     }, []);
 
     const getImageSrc = () => {
@@ -112,29 +112,29 @@ export default function HomeCourseCard({course, index}: { course: Course, index:
                         </div>
 
                         <div className="coursesCard-footer">
-                            {/*<div className="coursesCard-footer__author">*/}
-                            {/*    <Image*/}
-                            {/*        width={30}*/}
-                            {/*        height={30}*/}
-                            {/*        src={course.authorImageSrc}*/}
-                            {/*        alt="image"*/}
-                            {/*    />*/}
-                            {/*    <div>{course.authorName || "Ali Tufan"}</div>*/}
-                            {/*</div>*/}
+                            <div className="coursesCard-footer__author">
+                                <Image
+                                    width={30}
+                                    height={30}
+                                    src={"https://avatar.iran.liara.run/public/boy"}
+                                    alt="image"
+                                />
+                                <div>{course?.user?.name}</div>
+                            </div>
 
-                            {/*<div className="coursesCard-footer__price">*/}
-                            {/*    {course.paid ? (*/}
-                            {/*        <>*/}
-                            {/*            <div>${course.originalPrice}</div>*/}
-                            {/*            <div>${course.discountedPrice}</div>*/}
-                            {/*        </>*/}
-                            {/*    ) : (*/}
-                            {/*        <>*/}
-                            {/*            <div></div>*/}
-                            {/*            <div>Free</div>*/}
-                            {/*        </>*/}
-                            {/*    )}*/}
-                            {/*</div>*/}
+                            <div className="coursesCard-footer__price">
+                                {!course.is_free ? (
+                                    <>
+                                        <div></div>
+                                        <div>${course.price}</div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div></div>
+                                        <div>Free</div>
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

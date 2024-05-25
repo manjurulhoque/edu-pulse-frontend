@@ -10,4 +10,9 @@ interface Course {
     category: Category | null;
     category_id: number;
     is_published: boolean;
+    is_free: boolean;
+    price: number;
+    created_at: Date;
+    updated_at: Date;
+    user: User;
 }
