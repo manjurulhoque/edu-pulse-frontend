@@ -22,9 +22,18 @@ export const CourseApi = createApi({
         }),
         createCourse: builder.mutation({
             query: (formData) => {
-                console.log(formData)
                 return {
                     url: 'create-course/',
+                    method: 'POST',
+                    body: formData,
+                }
+            },
+            invalidatesTags: ['Course']
+        }),
+        publishCourse: builder.mutation({
+            query: (formData) => {
+                return {
+                    url: 'publish-course/',
                     method: 'POST',
                     body: formData,
                 }
@@ -36,5 +45,6 @@ export const CourseApi = createApi({
 
 export const {
     useCreateCourseMutation,
-    useMyCreatedCoursesQuery
+    useMyCreatedCoursesQuery,
+    usePublishCourseMutation
 } = CourseApi;

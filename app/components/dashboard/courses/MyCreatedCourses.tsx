@@ -9,7 +9,7 @@ import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
 
 const MyCreatedCourses: React.FC = () => {
     const [currentCategory, setCurrentCategory] = useState<number>(0);
-    const [pageItems, setPageItems] = useState<any>([]);
+    const [pageItems, setPageItems] = useState<Course[]>([]);
     const [activeTab, setActiveTab] = useState(1);
     const [pageData, setPageData] = useState<Course[]>([]);
     const {data: categories, isLoading: isCategoriesLoading} = useCategoriesQuery(null);
@@ -28,7 +28,7 @@ const MyCreatedCourses: React.FC = () => {
                 ]);
             }
         }
-    }, [activeTab]);
+    }, [activeTab, courses]);
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -177,7 +177,8 @@ const MyCreatedCourses: React.FC = () => {
                                         </div>
 
                                         <div className="row y-gap-30 pt-30">
-                                            {pageItems?.map((course: Course, i: any) => (
+                                            {pageItems?.length === 0 && <h3>No courses found!</h3>}
+                                            {pageItems?.length > 0 && pageItems?.map((course: Course, i: any) => (
                                                 <CoursesCardDashboard course={course} key={i}/>
                                             ))}
                                         </div>
