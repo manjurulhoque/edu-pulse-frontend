@@ -11,8 +11,6 @@ import { usePathname } from "next/navigation";
 
 const Header = () => {
     const {data: session, status} = useSession();
-    console.log("session", session?.user);
-    console.log("status", status);
     const pathname = usePathname();
 
     const [activeMobileMenu, setActiveMobileMenu] = useState(false);

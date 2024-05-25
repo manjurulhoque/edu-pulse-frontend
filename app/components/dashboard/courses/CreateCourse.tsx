@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import FooterDashboard from "@/app/components/dashboard/FooterDashboard";
 import 'react-quill/dist/quill.snow.css';
 import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { useCreateCourseMutation } from "@/app/store/reducers/courses/api";
 import { toast } from "react-toastify";
 import Dropzone, { useDropzone } from "react-dropzone";
+import { redirect } from "next/navigation";
 
 interface FormValues {
     title: string;
@@ -22,6 +23,8 @@ interface FormValues {
     category_id: number | null;
 }
 
+const MAX_FILE_SIZE = 5000000;
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
 const formSchema = z.object({
     title: z.string().min(3, 'Title is required'),
@@ -43,8 +46,9 @@ const formSchema = z.object({
 
 const CreateCourse: React.FC = () => {
     const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), {ssr: false}), []);
-    const {data, error, isLoading: isCategoriesLoading, isError, refetch} = useCategoriesQuery(null);
-    const [createNewCourse, {isLoading, isError: isCreateCourseError, isSuccess}] = useCreateCourseMutation();
+    const {data, error, isLoading: isCategoriesLoading} = useCategoriesQuery(null);
+    const [createNewCourse] = useCreateCourseMutation();
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     const learningModules = {
         toolbar: [
@@ -74,10 +78,30 @@ const CreateCourse: React.FC = () => {
             }
         },
         onSubmit: async (values) => {
-            // Handle form submission
-            const result: any = await createNewCourse(values);
+            const formData = new FormData();
+            // Convert Formik values to FormData
+            const courseInput = {
+                title: values.title,
+                description: values.description,
+                short_description: values.short_description,
+                student_will_learn: values.student_will_learn,
+                requirements: values.requirements,
+                level: values.level,
+                category_id: values.category_id
+            };
+
+            formData.append("course_input", JSON.stringify(courseInput));
+            if (values.preview_image && values.preview_image instanceof File) {
+                formData.append("preview_image", values.preview_image);
+            } else {
+                toast.error("An image file is required.");
+                return;
+            }
+
+            const result: any = await createNewCourse(formData);
             if (result.data) {
-                toast.success("Course created successfully")
+                toast.success("Course created successfully");
+                redirect("/my-created-courses");
             } else {
                 toast.warning(result?.data?.message || "Something went wrong. Please try again later");
             }
@@ -88,6 +112,13 @@ const CreateCourse: React.FC = () => {
         // Since only one file is allowed, take the first one
         const file = acceptedFiles[0];
         formik.setFieldValue('preview_image', file);
+
+        // Create a URL for the file for preview
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setPreviewUrl(reader.result as string);
+        };
+        reader.readAsDataURL(file);
     };
 
     return (
@@ -149,12 +180,14 @@ const CreateCourse: React.FC = () => {
                                             Preview Image*
                                         </label>
 
-                                        <Dropzone onDrop={onDrop} maxFiles={1}>
+                                        <Dropzone onDrop={onDrop} maxFiles={1}
+                                                  accept={{"image/*": [".png", ".jpg", ".jpeg", ".webp"]}}>
                                             {({getRootProps, getInputProps, isDragActive}) => (
                                                 <div {...getRootProps()} style={{
                                                     border: '2px dashed gray',
                                                     padding: '80px',
-                                                    textAlign: 'center'
+                                                    textAlign: 'center',
+                                                    cursor: 'pointer'
                                                 }}>
                                                     <input {...getInputProps()} />
                                                     {
@@ -165,6 +198,12 @@ const CreateCourse: React.FC = () => {
                                                 </div>
                                             )}
                                         </Dropzone>
+                                        {previewUrl && (
+                                            <div style={{marginTop: '20px', textAlign: 'center'}}>
+                                                <img src={previewUrl} alt="Preview"
+                                                     style={{maxWidth: '100%', maxHeight: '300px'}}/>
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="col-12">

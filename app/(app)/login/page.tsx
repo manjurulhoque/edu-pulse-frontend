@@ -6,8 +6,6 @@ import { permanentRedirect } from "next/navigation";
 const LoginPage = async () => {
     // const router = useRouter();
     const data = await getServerSession(authOptions);
-    console.log("data", data);
-
     if (data?.user) {
         permanentRedirect('/');
     }

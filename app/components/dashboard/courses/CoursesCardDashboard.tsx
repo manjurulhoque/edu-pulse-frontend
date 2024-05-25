@@ -11,16 +11,21 @@ export default function CoursesCardDashboard({course}: {course: Course}) {
         //     setRating((pre): any => [...pre, "star"]);
         // }
     }, []);
+
+    const getImageSrc = () => {
+        return `${process.env.BACKEND_BASE_URL}/${course.preview_image}`;
+    }
+
     return (
         <div className="w-1/5 xl:w-1/3 lg:w-1/2 sm:w-1/1">
             <div className="relative">
-                {/*<Image*/}
-                {/*    width={560}*/}
-                {/*    height={325}*/}
-                {/*    className="rounded-8 w-1/1"*/}
-                {/*    src={course.imageSrc}*/}
-                {/*    alt="image"*/}
-                {/*/>*/}
+                <Image
+                    width={560}
+                    height={325}
+                    className="rounded-8 w-1/1"
+                    src={getImageSrc()}
+                    alt="image"
+                />
 
                 <button
                     onClick={() => setActiveShare((pre) => !pre)}

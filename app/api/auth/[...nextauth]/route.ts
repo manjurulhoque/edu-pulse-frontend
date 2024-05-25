@@ -109,8 +109,6 @@ export const authOptions: AuthOptions = {
                         },
                     } as User;
 
-                    console.log(user);
-
                     // Any user object returned here will be set in the session for the user
                     return Promise.resolve(user);
                 } else {
@@ -122,7 +120,6 @@ export const authOptions: AuthOptions = {
     ],
     callbacks: {
         async jwt({token, user}) {
-            console.log("user", user);
             if (user) {
                 token.id = user.id;
                 token.refresh = user.refresh;
@@ -133,7 +130,6 @@ export const authOptions: AuthOptions = {
             return token;
         },
         async session({session, token}) {
-            console.log("token", token)
             session.access = token.access;
             session.exp = token.exp;
             session.refresh = token.refresh;

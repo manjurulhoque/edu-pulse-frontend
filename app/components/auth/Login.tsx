@@ -35,8 +35,6 @@ const Login = () => {
             redirect: false,
         });
 
-        console.log(result);
-
         if (result?.status === 401) {
             // If there is an error, update the state to display the error message
             setErrorMessage("Invalid credentials");

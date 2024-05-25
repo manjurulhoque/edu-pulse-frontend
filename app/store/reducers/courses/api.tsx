@@ -21,11 +21,12 @@ export const CourseApi = createApi({
             },
         }),
         createCourse: builder.mutation({
-            query: body => {
+            query: (formData) => {
+                console.log(formData)
                 return {
                     url: 'create-course/',
                     method: 'POST',
-                    body: body,
+                    body: formData,
                 }
             },
             invalidatesTags: ['Course']

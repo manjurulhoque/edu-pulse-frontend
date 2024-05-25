@@ -5,8 +5,6 @@ import { permanentRedirect } from "next/navigation";
 
 const SignupPage = async () => {
     const data = await getServerSession(authOptions);
-    console.log("data", data);
-
     if (data?.user) {
         permanentRedirect('/');
     }

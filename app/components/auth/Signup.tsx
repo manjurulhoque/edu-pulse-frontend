@@ -39,7 +39,6 @@ const Signup = () => {
                 setIsClicked(false);
             } else {
                 const data = await response.json();
-                console.log(data);
                 setErrorMessage('');
                 toast.success("Register was successful");
                 setTimeout(() => {
