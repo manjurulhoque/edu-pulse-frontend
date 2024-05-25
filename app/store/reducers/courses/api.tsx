@@ -8,6 +8,18 @@ export const CourseApi = createApi({
     baseQuery: DynamicBaseQuery,
     tagTypes: ['Course'],
     endpoints: (builder) => ({
+        allCourses: builder.query<PaginatedResponse<Course>, PaginationArgs>({
+            query: ({page, page_size}) => {
+                return {
+                    url: "all-courses/",
+                    params: {page, page_size}
+                }
+            },
+            transformResponse: (rawResult: { data: PaginatedResponse<Course>, message: string }, meta) => {
+                const {data} = rawResult;
+                return data;
+            },
+        }),
         myCreatedCourses: builder.query<Course[], null>({
             query: () => {
                 return {
@@ -16,7 +28,7 @@ export const CourseApi = createApi({
             },
             providesTags: ['Course'],
             transformResponse: (rawResult: { data: Course[], message: string }, meta) => {
-                const { data } = rawResult;
+                const {data} = rawResult;
                 return data;
             },
         }),
@@ -44,6 +56,7 @@ export const CourseApi = createApi({
 });
 
 export const {
+    useAllCoursesQuery,
     useCreateCourseMutation,
     useMyCreatedCoursesQuery,
     usePublishCourseMutation

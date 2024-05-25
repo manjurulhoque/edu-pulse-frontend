@@ -6,6 +6,7 @@ interface Course {
     student_will_learn: string;
     requirements: string;
     preview_image: string;
+    level: string;
     category: Category | null;
     category_id: number;
     is_published: boolean;

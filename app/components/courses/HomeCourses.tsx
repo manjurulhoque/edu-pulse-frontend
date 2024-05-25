@@ -1,40 +1,47 @@
 "use client";
 
-import { coursesData } from "../../data/courses";
 import React, { useState, useEffect } from "react";
 import { allCategories } from "../../data/courses";
 import { viewStatus } from "../../data/courses";
 import { difficulty } from "../../data/courses";
 import Link from "next/link";
 import HomeCourseCard from "./HomeCourseCard";
+import { useAllCoursesQuery } from "@/app/store/reducers/courses/api";
 
 export default function HomeCourses() {
-    const [pageItems, setPageItems] = useState([]);
+    const [pageItems, setPageItems] = useState<Course[]>([]);
     const [currentCategory, setCurrentCategory] = useState("All");
     const [rating, setRating] = useState("All");
-    const [currentdifficulty, setCurrentdifficulty] = useState("All");
+    const [currentDifficulty, setCurrentDifficulty] = useState("All");
     const [currentDropdown, setCurrentDropdown] = useState("");
+    const {data: courseResult} = useAllCoursesQuery({page: 1, page_size: 10});
+
+    useEffect(() => {
+        if (courseResult) {
+            setPageItems(courseResult?.results);
+        }
+    }, [courseResult]);
 
     useEffect(() => {
         setCurrentDropdown("");
 
-        let filtered = [];
+        let filtered: Course[] = [];
 
         if (currentCategory == "All") {
-            filtered = coursesData;
+            filtered = courseResult?.results as Course[];
         } else {
-            filtered = coursesData.filter((elm) => elm.category == currentCategory);
+            // filtered = courses.filter((elm) => elm.category == currentCategory);
         }
         if (rating != "All") {
-            filtered = filtered.filter((elm) => elm.viewStatus == rating);
+            // filtered = filtered.filter((elm) => elm.viewStatus == rating);
         }
 
-        if (currentdifficulty != "All") {
-            filtered = filtered.filter((elm) => elm.difficulty == currentdifficulty);
+        if (currentDifficulty != "All") {
+            // filtered = filtered.filter((elm) => elm.difficulty == currentDifficulty);
         }
 
-        setPageItems(filtered as any);
-    }, [rating, currentdifficulty, currentCategory]);
+        setPageItems(filtered);
+    }, [rating, currentDifficulty, currentCategory]);
 
     return (
         <section className="layout-pt-lg layout-pb-lg">
@@ -47,7 +54,7 @@ export default function HomeCourses() {
                             </h2>
 
                             <p className="sectionTitle__text ">
-                                10,000+ unique online course list designs
+                                10+ unique online course list designs
                             </p>
                         </div>
                     </div>
@@ -168,9 +175,9 @@ export default function HomeCourses() {
                                             data-el-toggle-active=".js-drop3-active"
                                         >
                                             <span className="js-dropdown-title">
-                                                {currentdifficulty == "All"
-                                                    ? "Diffiulty"
-                                                    : currentdifficulty}
+                                                {currentDifficulty == "All"
+                                                    ? "Difficulty"
+                                                    : currentDifficulty}
                                             </span>
                                             <i className="icon text-9 ml-40 icon-chevron-down"></i>
                                         </div>
@@ -185,11 +192,11 @@ export default function HomeCourses() {
                                                     <div
                                                         key={i}
                                                         onClick={() => {
-                                                            setCurrentdifficulty(elm);
+                                                            setCurrentDifficulty(elm);
                                                             setCurrentDropdown("");
                                                         }}
                                                         className={`d-block js-dropdown-link cursor ${
-                                                            currentdifficulty == elm ? "activeMenu" : ""
+                                                            currentDifficulty == elm ? "activeMenu" : ""
                                                         } `}
                                                     >
                                                         {elm}
@@ -210,8 +217,8 @@ export default function HomeCourses() {
                     data-aos-offset="80"
                     data-aos-duration={800}
                 >
-                    {pageItems.slice(0, 8).map((elm, i) => (
-                        <HomeCourseCard key={i} data={elm} index={i}/>
+                    {pageItems?.slice(0, 8).map((elm: Course, i) => (
+                        <HomeCourseCard key={i} course={elm} index={i}/>
                     ))}
                 </div>
 

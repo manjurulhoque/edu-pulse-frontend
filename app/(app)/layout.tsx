@@ -13,6 +13,7 @@ import Footer from "@/app/components/layout/Footer";
 import Header from "@/app/components/layout/Header";
 import { AOSInit } from "@/app/components/aos-init";
 import { ToastContainer } from "react-toastify";
+import ReduxProvider from "@/app/components/ReduxProvider";
 
 config.autoAddCss = false;
 
@@ -32,12 +33,14 @@ const RootLayout: React.FC<Props> = async ({children}) => {
         <html lang="en">
         <AOSInit/>
         <body>
-        <NextAuthProvider session={session}>
-            <Header/>
-            {children}
-            <Footer/>
-            <ToastContainer/>
-        </NextAuthProvider>
+        <ReduxProvider>
+            <NextAuthProvider session={session}>
+                <Header/>
+                {children}
+                <Footer/>
+                <ToastContainer/>
+            </NextAuthProvider>
+        </ReduxProvider>
         </body>
         </html>
     );
