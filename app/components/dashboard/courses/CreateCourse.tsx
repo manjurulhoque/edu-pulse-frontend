@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import FooterDashboard from "@/app/components/dashboard/FooterDashboard";
 import 'react-quill/dist/quill.snow.css';
 import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
@@ -9,6 +9,7 @@ import { useFormik } from "formik";
 import { z } from 'zod';
 import { useCreateCourseMutation } from "@/app/store/reducers/courses/api";
 import { toast } from "react-toastify";
+import Dropzone, { useDropzone } from "react-dropzone";
 
 interface FormValues {
     title: string;
@@ -17,6 +18,7 @@ interface FormValues {
     student_will_learn: string;
     requirements: string;
     level: string;
+    preview_image: string | File | null;
     category_id: number | null;
 }
 
@@ -27,6 +29,13 @@ const formSchema = z.object({
     level: z.string().min(1, 'Level is required'),
     category_id: z.number().int("Category is required"),
     short_description: z.string().min(10, 'At least 10 characters is required'),
+    preview_image: z
+        .any()
+        .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
+        .refine(
+            (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+            "Only .jpg, .jpeg, .png and .webp formats are supported."
+        ),
     student_will_learn: z.string().optional(),
     requirements: z.string().optional(),
 });
@@ -53,6 +62,7 @@ const CreateCourse: React.FC = () => {
             requirements: '',
             level: '',
             category_id: null,
+            preview_image: null,
         },
         // validationSchema: toFormikValidationSchema(formSchema),
         validate: values => {
@@ -73,6 +83,12 @@ const CreateCourse: React.FC = () => {
             }
         },
     });
+
+    const onDrop = (acceptedFiles: File[]) => {
+        // Since only one file is allowed, take the first one
+        const file = acceptedFiles[0];
+        formik.setFieldValue('preview_image', file);
+    };
 
     return (
         <div className="dashboard__main">
@@ -110,7 +126,7 @@ const CreateCourse: React.FC = () => {
                                         {formik.errors.title && <div>{formik.errors.title}</div>}
                                     </div>
 
-                                    <div className="col-12">
+                                    <div className="col-md-6">
                                         <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
                                             Short Description*
                                         </label>
@@ -126,6 +142,29 @@ const CreateCourse: React.FC = () => {
                                             formik.errors.short_description &&
                                             <div>{formik.errors.short_description}</div>
                                         }
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
+                                            Preview Image*
+                                        </label>
+
+                                        <Dropzone onDrop={onDrop} maxFiles={1}>
+                                            {({getRootProps, getInputProps, isDragActive}) => (
+                                                <div {...getRootProps()} style={{
+                                                    border: '2px dashed gray',
+                                                    padding: '80px',
+                                                    textAlign: 'center'
+                                                }}>
+                                                    <input {...getInputProps()} />
+                                                    {
+                                                        isDragActive ?
+                                                            <p>Drop the file here...</p> :
+                                                            <p>Drag & drop a file here, or click to select a file</p>
+                                                    }
+                                                </div>
+                                            )}
+                                        </Dropzone>
                                     </div>
 
                                     <div className="col-12">

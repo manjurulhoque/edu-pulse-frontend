@@ -16,7 +16,18 @@ const MyCreatedCourses: React.FC = () => {
     const {data: courses, isLoading: isCoursesLoading} = useMyCreatedCoursesQuery(null);
 
     useEffect(() => {
-        setPageData(courses ?? []);
+        if (courses) {
+            // filter published courses
+            if (activeTab === 1) {
+                setPageData([
+                    ...(courses ?? [])?.filter((course: Course) => course.is_published)
+                ]);
+            } else {
+                setPageData([
+                    ...(courses ?? [])?.filter((course: Course) => !course.is_published)
+                ]);
+            }
+        }
     }, [activeTab]);
 
     const handleSubmit = (e: any) => {
@@ -28,7 +39,7 @@ const MyCreatedCourses: React.FC = () => {
             setPageItems(pageData);
         } else {
             setPageItems([
-                ...pageData.filter((elm: Course) => elm.category_id == currentCategory),
+                ...pageData.filter((course: Course) => course.category_id == currentCategory),
             ]);
         }
     }, [currentCategory, pageData]);
