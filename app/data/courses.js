@@ -63,9 +63,6 @@ export const instructorNames = [
 
 export const languages = [
     {id: 1, title: "English"},
-    {id: 2, title: "French"},
-    {id: 3, title: "German"},
-    {id: 4, title: "Italian"},
 ];
 
 export const levels = [
@@ -87,12 +84,12 @@ export const rating = [
 ];
 
 export const categories = [
-    {id: 1, title: "Art"},
-    {id: 2, title: "Animation"},
-    {id: 3, title: "Design"},
-    {id: 4, title: "Photography"},
-    {id: 5, title: "Programming"},
-    {id: 6, title: "Writing"},
+    {id: 1, name: "Art"},
+    {id: 2, name: "Animation"},
+    {id: 3, name: "Design"},
+    {id: 4, name: "Photography"},
+    {id: 5, name: "Programming"},
+    {id: 6, name: "Writing"},
 ];
 
 export const duration = [

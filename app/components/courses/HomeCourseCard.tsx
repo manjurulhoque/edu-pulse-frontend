@@ -17,6 +17,10 @@ export default function HomeCourseCard({course, index}: { course: Course, index:
         return `${process.env.BACKEND_BASE_URL}/${course.preview_image}`;
     }
 
+    const getAuthorImageSrc = () => {
+        return `${process.env.BACKEND_BASE_URL}/${course.user.avatar}`;
+    }
+
     return (
         <div className="col-lg-3 col-md-6">
             <div>
@@ -94,7 +98,7 @@ export default function HomeCourseCard({course, index}: { course: Course, index:
                                     />
                                 </div>
                                 <div className="text-14 lh-1">{`${Math.floor(
-                                    33423 / 60,
+                                    343 / 60,
                                 )}h ${Math.floor(33423 % 60)}m`}</div>
                             </div>
 
@@ -116,7 +120,7 @@ export default function HomeCourseCard({course, index}: { course: Course, index:
                                 <Image
                                     width={30}
                                     height={30}
-                                    src={"https://avatar.iran.liara.run/public/boy"}
+                                    src={getAuthorImageSrc()}
                                     alt="image"
                                 />
                                 <div>{course?.user?.name}</div>
