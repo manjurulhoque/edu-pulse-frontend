@@ -21,6 +21,9 @@ interface FormValues {
     level: string;
     preview_image: string | File | null;
     category_id: number | null;
+    is_free: boolean;
+    actual_price: number | null;
+    discounted_price: number | null;
 }
 
 const MAX_FILE_SIZE = 5000000;
@@ -32,6 +35,9 @@ const formSchema = z.object({
     level: z.string().min(1, 'Level is required'),
     category_id: z.number().int("Category is required"),
     short_description: z.string().min(10, 'At least 10 characters is required'),
+    is_free: z.boolean(),
+    actual_price: z.number().multipleOf(0.01),
+    discounted_price: z.number().multipleOf(0.01),
     preview_image: z
         .any()
         .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
@@ -67,6 +73,9 @@ const CreateCourse: React.FC = () => {
             level: '',
             category_id: null,
             preview_image: null,
+            is_free: false,
+            actual_price: null,
+            discounted_price: null,
         },
         // validationSchema: toFormikValidationSchema(formSchema),
         validate: values => {
@@ -78,6 +87,7 @@ const CreateCourse: React.FC = () => {
             }
         },
         onSubmit: async (values) => {
+            console.log(values)
             const formData = new FormData();
             // Convert Formik values to FormData
             const courseInput = {
@@ -87,7 +97,10 @@ const CreateCourse: React.FC = () => {
                 student_will_learn: values.student_will_learn,
                 requirements: values.requirements,
                 level: values.level,
-                category_id: values.category_id
+                category_id: values.category_id,
+                is_free: values.is_free,
+                actual_price: values.actual_price,
+                discounted_price: values.discounted_price,
             };
 
             formData.append("course_input", JSON.stringify(courseInput));
@@ -101,7 +114,7 @@ const CreateCourse: React.FC = () => {
             const result: any = await createNewCourse(formData);
             if (result.data) {
                 toast.success("Course created successfully");
-                redirect("/my-created-courses");
+                window.location.href = "/my-created-courses";
             } else {
                 toast.warning(result?.data?.message || "Something went wrong. Please try again later");
             }
@@ -245,7 +258,56 @@ const CreateCourse: React.FC = () => {
                                             onChange={(value) => formik.setFieldValue('requirements', value)}
                                             modules={learningModules}
                                         />
-                                        {formik.errors.requirements && <div>{formik.errors.requirements}</div>}
+                                        {formik.errors.requirements && <div className="invalid-feedback">{formik.errors.requirements}</div>}
+                                    </div>
+
+                                    <div className="col-md-2">
+                                        <div className="form-check">
+                                            <input className="form-check-input" type="checkbox" defaultChecked={formik.values.is_free}
+                                                   id="is_free" name="is_free" onChange={formik.handleChange}/>
+                                            <label className="form-check-label" htmlFor="is_free">
+                                                Is free?*
+                                            </label>
+                                        </div>
+                                        {formik.errors.is_free && <div className="invalid-feedback">{formik.errors.is_free}</div>}
+                                    </div>
+
+                                    <div className="col-md-5">
+                                        <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
+                                            Actual price*
+                                        </label>
+
+                                        <input
+                                            required
+                                            className="form-control"
+                                            type="number"
+                                            step={0.01}
+                                            placeholder="Actual price of the course"
+                                            name="actual_price"
+                                            value={formik.values.actual_price || ''}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                        />
+                                        {formik.errors.actual_price && <div className="invalid-feedback">{formik.errors.actual_price}</div>}
+                                    </div>
+
+                                    <div className="col-md-5">
+                                        <label className="text-16 lh-1 fw-500 text-dark-1 mb-10">
+                                            Price after discount*
+                                        </label>
+
+                                        <input
+                                            required
+                                            className="form-control"
+                                            type="number"
+                                            step={0.01}
+                                            placeholder="Price after discount"
+                                            name="discounted_price"
+                                            value={formik.values.discounted_price || ''}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                        />
+                                        {formik.errors.actual_price && <div className="invalid-feedback">{formik.errors.actual_price}</div>}
                                     </div>
 
                                     <div className="col-md-6">
@@ -285,15 +347,12 @@ const CreateCourse: React.FC = () => {
                                                     </option>
                                                 ))}
                                         </select>
-                                        {formik.errors.category_id && <div>{formik.errors.category_id}</div>}
+                                        {formik.errors.category_id && <div className="invalid-feedback">{formik.errors.category_id}</div>}
                                     </div>
 
                                     <div className="row y-gap-20 justify-between pt-15">
                                         <div className="col-auto">
-                                            <button
-                                                className="button -md -purple-1 text-white -right"
-                                                type="submit"
-                                            >
+                                            <button className="button -md -purple-1 text-white -right" type="submit">
                                                 Create
                                             </button>
                                         </div>
