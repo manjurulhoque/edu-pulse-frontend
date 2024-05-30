@@ -479,13 +479,13 @@ export default function CourseList() {
                                                     <div className="h-100 pt-15">
                                                         <div className="d-flex items-center">
                                                             <div className="text-14 lh-1 text-yellow-1 mr-10">
-                                                                {elm.rating}
+                                                                4.9
                                                             </div>
                                                             <div className="d-flex x-gap-5 items-center">
-                                                                <Star star={elm.rating} textColor={null} textSize={null}/>
+                                                                <Star star={4.9} textColor={null} textSize={null}/>
                                                             </div>
                                                             <div className="text-13 lh-1 ml-10">
-                                                                ({elm.ratingCount})
+                                                                (345)
                                                             </div>
                                                         </div>
 
@@ -509,7 +509,7 @@ export default function CourseList() {
                                                                     />
                                                                 </div>
                                                                 <div className="text-14 lh-1">
-                                                                    {elm.lessonCount} lesson
+                                                                    35 lesson
                                                                 </div>
                                                             </div>
 
@@ -522,9 +522,7 @@ export default function CourseList() {
                                                                         alt="icon"
                                                                     />
                                                                 </div>
-                                                                <div className="text-14 lh-1">{`${Math.floor(
-                                                                    elm.duration / 60,
-                                                                )}h ${Math.floor(elm.duration % 60)}m`}</div>
+                                                                <div className="text-14 lh-1">{`14h 8m`}</div>
                                                             </div>
 
                                                             <div className="d-flex items-center">

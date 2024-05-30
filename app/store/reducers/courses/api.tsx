@@ -20,6 +20,17 @@ export const CourseApi = createApi({
                 return data;
             },
         }),
+        singleCourse: builder.query<Course, {slug: string}>({
+            query: ({slug}) => {
+                return {
+                    url: `single-course/${slug}`,
+                }
+            },
+            transformResponse: (rawResult: { data: Course, message: string }, meta) => {
+                const {data} = rawResult;
+                return data;
+            },
+        }),
         myCreatedCourses: builder.query<Course[], null>({
             query: () => {
                 return {
@@ -57,6 +68,7 @@ export const CourseApi = createApi({
 
 export const {
     useAllCoursesQuery,
+    useSingleCourseQuery,
     useCreateCourseMutation,
     useMyCreatedCoursesQuery,
     usePublishCourseMutation
