@@ -129,8 +129,8 @@ export default function HomeCourseCard({course, index}: { course: Course, index:
                             <div className="coursesCard-footer__price">
                                 {!course.is_free ? (
                                     <>
-                                        <div></div>
-                                        <div>${course.price}</div>
+                                        <div>${course.discounted_price}</div>
+                                        <div>${course.actual_price}</div>
                                     </>
                                 ) : (
                                     <>

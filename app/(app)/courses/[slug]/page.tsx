@@ -14,7 +14,7 @@ const SingleCoursePage = ({ params }: { params: { slug: string } }) => {
         <div className="main-content">
             <Header/>
 
-            <div className="content-wrapper  js-content-wrapper overflow-hidden">
+            <div className="content-wrapper js-content-wrapper">
                 <PageLinks dark={null}/>
                 <SingleCourse/>
             </div>

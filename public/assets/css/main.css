@@ -10494,10 +10494,9 @@ h1, h2, h3, h4, h5, h6 {
 .courses-single-info {
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     width: 360px;
     z-index: 20;
-
 }
 
 @media (max-width: 1199px) {

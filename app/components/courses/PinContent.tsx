@@ -24,10 +24,6 @@ export default function PinContent({course}: { course: Course }) {
         return `${process.env.BACKEND_BASE_URL}/${course?.preview_image}`;
     }
 
-    const getAuthorImageSrc = () => {
-        return `${process.env.BACKEND_BASE_URL}/${course?.user.avatar}`;
-    }
-
     return (
         <>
             <div
@@ -35,12 +31,12 @@ export default function PinContent({course}: { course: Course }) {
                 style={
                     screenWidth < 991
                         ? {height: "fit-content", left: "0%"}
-                        : {height: "100%", left: "0px", paddingTop: "80px", position: "absolute"}
+                        : {height: "100%", paddingTop: "80px", right: "7%"}
                 }
                 className="courses-single-info js-pin-content"
             >
                 <div
-                    style={{position: "sticky", top: "100px", left: "0px"}}
+                    style={{position: "sticky", top: "100px"}}
                     className="bg-white shadow-2 rounded-8 border-light py-10 px-10"
                 >
                     <div className="relative">
