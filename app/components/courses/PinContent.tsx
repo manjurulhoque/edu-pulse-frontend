@@ -94,7 +94,7 @@ export default function PinContent({course}: { course: Course }) {
                             <div className="d-flex justify-between py-8 ">
                                 <div className="d-flex items-center text-dark-1">
                                     <div className="icon-video-file"></div>
-                                    <div className="mr-10">Lessons</div>
+                                    <div className="mr-10">{' '}Lessons</div>
                                 </div>
                                 <div>10</div>
                             </div>
@@ -102,7 +102,7 @@ export default function PinContent({course}: { course: Course }) {
                             <div className="d-flex justify-between py-8 border-top-light">
                                 <div className="d-flex items-center text-dark-1">
                                     <div className="icon-puzzle"></div>
-                                    <div className="ml-10">Quizzes</div>
+                                    <div className="ml-10">{' '}Quizzes</div>
                                 </div>
                                 <div>3</div>
                             </div>
@@ -110,7 +110,7 @@ export default function PinContent({course}: { course: Course }) {
                             <div className="d-flex justify-between py-8 border-top-light">
                                 <div className="d-flex items-center text-dark-1">
                                     <div className="icon-clock-2"></div>
-                                    <div className="mr-10">Duration</div>
+                                    <div className="mr-10">{' '} Duration</div>
                                 </div>
                                 <div>13 Hours</div>
                             </div>
@@ -134,7 +134,7 @@ export default function PinContent({course}: { course: Course }) {
                             <div className="d-flex justify-between py-8 border-top-light">
                                 <div className="d-flex items-center text-dark-1">
                                     <div className="icon-infinity"></div>
-                                    <div className="mr-10">Full lifetime access</div>
+                                    <div className="mr-10">{' '}Full lifetime access</div>
                                 </div>
                                 <div>Yes</div>
                             </div>

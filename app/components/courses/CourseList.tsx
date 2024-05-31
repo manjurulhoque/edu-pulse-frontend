@@ -558,8 +558,8 @@ export default function CourseList() {
                                                         <div className="coursesCard-footer__price">
                                                             {!elm.is_free ? (
                                                                 <>
-                                                                    <div>${elm.originalPrice}</div>
-                                                                    <div>${elm.discountedPrice}</div>
+                                                                    <div>${elm.actual_price}</div>
+                                                                    <div>${elm.discounted_price}</div>
                                                                 </>
                                                             ) : (
                                                                 <>

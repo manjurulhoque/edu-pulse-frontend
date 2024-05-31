@@ -127,9 +127,9 @@ const SingleCourse = () => {
                                                     <div
                                                         className="bg-image size-30 rounded-full js-lazy"
                                                         style={{
-                                                            backgroundImage: `url(${getImageSrc})`,
+                                                            backgroundImage: `url(${getImageSrc()})`,
                                                         }}
-                                                        data-bg="img/avatars/small-1.png"
+                                                        data-bg={getAuthorImageSrc()}
                                                     ></div>
                                                     <div className="text-14 lh-1 ml-10 text-white">
                                                         {course?.user.name}

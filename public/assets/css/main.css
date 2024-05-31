@@ -16710,3 +16710,6 @@ table.table td {
     background: white;
 }
 
+.will-learn ul li, .requirements ul li {
+    list-style: disc !important;
+}
