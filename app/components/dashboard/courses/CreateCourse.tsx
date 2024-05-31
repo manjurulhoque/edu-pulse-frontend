@@ -1,16 +1,17 @@
 "use client";
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, {useCallback, useMemo, useState} from "react";
 import FooterDashboard from "@/app/components/dashboard/FooterDashboard";
 import 'react-quill/dist/quill.snow.css';
-import { useCategoriesQuery } from "@/app/store/reducers/categories/api";
+import {useCategoriesQuery} from "@/app/store/reducers/categories/api";
 import dynamic from "next/dynamic";
-import { useFormik } from "formik";
-import { z } from 'zod';
-import { useCreateCourseMutation } from "@/app/store/reducers/courses/api";
-import { toast } from "react-toastify";
-import Dropzone, { useDropzone } from "react-dropzone";
-import { redirect } from "next/navigation";
+import {useFormik} from "formik";
+import {z} from 'zod';
+import {useCreateCourseMutation} from "@/app/store/reducers/courses/api";
+import {toast} from "react-toastify";
+import Dropzone, {useDropzone} from "react-dropzone";
+import {redirect} from "next/navigation";
+import CourseCurriculum from "@/app/components/dashboard/courses/CourseCurriculum";
 
 interface FormValues {
     title: string;
@@ -258,18 +259,21 @@ const CreateCourse: React.FC = () => {
                                             onChange={(value) => formik.setFieldValue('requirements', value)}
                                             modules={learningModules}
                                         />
-                                        {formik.errors.requirements && <div className="invalid-feedback">{formik.errors.requirements}</div>}
+                                        {formik.errors.requirements &&
+                                            <div className="invalid-feedback">{formik.errors.requirements}</div>}
                                     </div>
 
                                     <div className="col-md-2">
                                         <div className="form-check">
-                                            <input className="form-check-input" type="checkbox" defaultChecked={formik.values.is_free}
+                                            <input className="form-check-input" type="checkbox"
+                                                   defaultChecked={formik.values.is_free}
                                                    id="is_free" name="is_free" onChange={formik.handleChange}/>
                                             <label className="form-check-label" htmlFor="is_free">
                                                 Is free?*
                                             </label>
                                         </div>
-                                        {formik.errors.is_free && <div className="invalid-feedback">{formik.errors.is_free}</div>}
+                                        {formik.errors.is_free &&
+                                            <div className="invalid-feedback">{formik.errors.is_free}</div>}
                                     </div>
 
                                     <div className="col-md-5">
@@ -288,7 +292,8 @@ const CreateCourse: React.FC = () => {
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                         />
-                                        {formik.errors.actual_price && <div className="invalid-feedback">{formik.errors.actual_price}</div>}
+                                        {formik.errors.actual_price &&
+                                            <div className="invalid-feedback">{formik.errors.actual_price}</div>}
                                     </div>
 
                                     <div className="col-md-5">
@@ -307,7 +312,8 @@ const CreateCourse: React.FC = () => {
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                         />
-                                        {formik.errors.actual_price && <div className="invalid-feedback">{formik.errors.actual_price}</div>}
+                                        {formik.errors.actual_price &&
+                                            <div className="invalid-feedback">{formik.errors.actual_price}</div>}
                                     </div>
 
                                     <div className="col-md-6">
@@ -347,7 +353,18 @@ const CreateCourse: React.FC = () => {
                                                     </option>
                                                 ))}
                                         </select>
-                                        {formik.errors.category_id && <div className="invalid-feedback">{formik.errors.category_id}</div>}
+                                        {formik.errors.category_id &&
+                                            <div className="invalid-feedback">{formik.errors.category_id}</div>}
+                                    </div>
+
+                                    <div className="col-12">
+                                        <div className="rounded-16 bg-white -dark-bg-dark-1 shadow-4 h-100">
+                                            <div className="d-flex items-center py-20 px-30 border-bottom-light">
+                                                <h2 className="text-17 lh-1 fw-500">Curriculum</h2>
+                                            </div>
+
+                                            <CourseCurriculum/>
+                                        </div>
                                     </div>
 
                                     <div className="row y-gap-20 justify-between pt-15">
