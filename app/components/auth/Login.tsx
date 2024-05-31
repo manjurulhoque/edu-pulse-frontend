@@ -72,7 +72,7 @@ const Login = () => {
                                             </Link>
                                         </p>
 
-                                        <p className="alert alert-warning">{errorMessage}</p>
+                                        {errorMessage && <p className="alert alert-warning">{errorMessage}</p>}
                                         <form
                                             className="contact-form respondForm__form row y-gap-20 pt-30"
                                             onSubmit={handleSubmit}

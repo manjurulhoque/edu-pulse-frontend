@@ -10,7 +10,6 @@ import {z} from 'zod';
 import {useCreateCourseMutation} from "@/app/store/reducers/courses/api";
 import {toast} from "react-toastify";
 import Dropzone, {useDropzone} from "react-dropzone";
-import {redirect} from "next/navigation";
 import CourseCurriculum from "@/app/components/dashboard/courses/CourseCurriculum";
 
 interface FormValues {
@@ -363,7 +362,7 @@ const CreateCourse: React.FC = () => {
                                                 <h2 className="text-17 lh-1 fw-500">Curriculum</h2>
                                             </div>
 
-                                            <CourseCurriculum/>
+                                            <CourseCurriculum sections={[]}/>
                                         </div>
                                     </div>
 

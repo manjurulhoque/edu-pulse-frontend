@@ -18,3 +18,10 @@ interface Course {
     updated_at: Date;
     user: User;
 }
+
+interface Section {
+    id?: number | null | undefined;
+    title: string;
+    course_id?: number | null | undefined;
+    lessons?: Lesson[]
+}
