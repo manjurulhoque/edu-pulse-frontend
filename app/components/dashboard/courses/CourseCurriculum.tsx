@@ -34,7 +34,7 @@ export default CourseCurriculum;
 
 const SectionCurriculum: React.FC<{ section: Section, i: number }> = ({section, i}) => {
     const [currentOpenItem, setCurrentOpenItem] = useState();
-    section.lessons = [{title: "Test", content: "URL"}]
+    section.lessons = [{title: "", content: ""}]
     return (
         <>
             <div className={`row ${i != 0 ? "pt-30" : ""}  `}>
@@ -86,14 +86,6 @@ const SectionCurriculum: React.FC<{ section: Section, i: number }> = ({section, 
                                 >
                                     <div className="accordion__content__inner px-30 py-30">
                                         <div className="d-flex x-gap-10 y-gap-10 flex-wrap">
-                                            <div>
-                                                <a
-                                                    href="#"
-                                                    className="button -sm py-15 -purple-3 text-purple-1 fw-500"
-                                                >
-                                                    Add Article +
-                                                </a>
-                                            </div>
                                             <div>
                                                 <a
                                                     href="#"
