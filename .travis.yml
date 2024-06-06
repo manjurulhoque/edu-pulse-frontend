@@ -6,5 +6,9 @@ services:
 before_install:
   - docker build -t rumi/docker-nextjs -f Dockerfile.dev .
 
-#script:
-#  - docker run rumi/docker-nextjs npm run test --passWithNoTests
+script:
+  - docker run rumi/docker-nextjs npm run test -- --passWithNoTests
+
+cache:
+  directories:
+    - node_modules
