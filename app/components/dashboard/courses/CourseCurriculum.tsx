@@ -22,7 +22,7 @@ const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections}) => {
             <div className="row y-gap-20 justify-end pt-30">
                 <div className="col-auto sm:w-1/1">
                     <button type={"button"} className="button -md -purple-1 text-white sm:w-1/1" onClick={addSection}>
-                        New section
+                        Add new section
                     </button>
                 </div>
             </div>
@@ -33,18 +33,60 @@ const CourseCurriculum: React.FC<CourseCurriculumProps> = ({sections}) => {
 export default CourseCurriculum;
 
 const SectionCurriculum: React.FC<{ section: Section, i: number }> = ({section, i}) => {
-    const [currentOpenItem, setCurrentOpenItem] = useState();
-    section.lessons = [{title: "", content: ""}]
+    const [currentOpenItem, setCurrentOpenItem] = useState<string | null>(null);
+    const [editLessonIndex, setEditLessonIndex] = useState<number | null>(null);
+    const [lessonTitle, setLessonTitle] = useState<string>("");
+
+    section.lessons = [{title: "", content: ""}];
+
+    const handleEditClick = (e: React.MouseEvent, index: number, title: string) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setEditLessonIndex(index);
+        setLessonTitle(title);
+    };
+
+    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLessonTitle(e.target.value);
+    };
+
+    const handleTitleBlur = (index: number) => {
+        if (section.lessons) {
+            section.lessons[index].title = lessonTitle;
+        }
+        setEditLessonIndex(null);
+    };
+
+    const handleTitleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+        if (e.key === "Enter") {
+            handleTitleBlur(index);
+        }
+    };
+
+    const addLesson = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const newLesson: Lesson = {title: "New Lesson", content: ""};
+        if (section.lessons) {
+            section.lessons = [...section.lessons, newLesson];
+        } else {
+            section.lessons = [newLesson];
+        }
+
+        console.log(section);
+    };
+
     return (
         <>
             <div className={`row ${i != 0 ? "pt-30" : ""}  `}>
                 <div className="col-12">
-                    <h4 className="text-16 lh-1 fw-500">Section title</h4>
+                    <h4 className="text-16 lh-1 fw-500">{section.title}</h4>
                 </div>
 
                 <div className="col-12">
                     <div className="accordion -block-2 text-left js-accordion">
-                        {section.lessons?.map((itm, index) => (
+                        {section.lessons?.map((lesson, index) => (
                             <div
                                 key={index}
                                 className={`accordion__item -dark-bg-dark-1 mt-10 ${
@@ -53,19 +95,33 @@ const SectionCurriculum: React.FC<{ section: Section, i: number }> = ({section, 
                             >
                                 <div
                                     className="accordion__button py-20 px-30 bg-light-4"
-                                    onClick={() =>
-                                        setCurrentOpenItem((pre): any => pre == `${i},${index}` ? "" : `${i},${index}`)
-                                    }
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        e.preventDefault();
+                                        setCurrentOpenItem((pre): any => pre == `${i},${index}` ? "" : `${i},${index}`);
+                                    }}
                                 >
                                     <div className="d-flex items-center">
                                         <div className="icon icon-drag mr-10"></div>
-                                        <span className="text-16 lh-14 fw-500 text-dark-1">
-                                        Lesson title
-                                    </span>
+                                        {editLessonIndex === index ? (
+                                            <input
+                                                type="text"
+                                                value={lessonTitle}
+                                                onChange={handleTitleChange}
+                                                onBlur={() => handleTitleBlur(index)}
+                                                onKeyPress={(e) => handleTitleKeyPress(e, index)}
+                                                autoFocus
+                                            />
+                                        ) : (
+                                            <span className="text-16 lh-14 fw-500 text-dark-1">{lesson.title}</span>
+                                        )}
                                     </div>
 
                                     <div className="d-flex x-gap-10 items-center">
-                                        <a href="#" className="icon icon-edit mr-5"></a>
+                                        <button
+                                            className="icon icon-edit mr-5"
+                                            onClick={(e) => handleEditClick(e, index, lesson.title)}
+                                        />
                                         <a href="#" className="icon icon-bin"></a>
                                         <div className="accordion__icon mr-0">
                                             <div
@@ -79,20 +135,18 @@ const SectionCurriculum: React.FC<{ section: Section, i: number }> = ({section, 
                                 <div
                                     className="accordion__content"
                                     style={
-                                        currentOpenItem == `${i},${index}`
-                                            ? {maxHeight: "100px"}
-                                            : {}
+                                        currentOpenItem == `${i},${index}` ? {maxHeight: "100px"} : {}
                                     }
                                 >
                                     <div className="accordion__content__inner px-30 py-30">
                                         <div className="d-flex x-gap-10 y-gap-10 flex-wrap">
                                             <div>
-                                                <a
-                                                    href="#"
+                                                <button
                                                     className="button -sm py-15 -purple-3 text-purple-1 fw-500"
+                                                    onClick={(e) => addLesson(e)}
                                                 >
-                                                    Add Article +
-                                                </a>
+                                                    Add Lesson +
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
